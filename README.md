@@ -1,8 +1,6 @@
 # LoginApp
 
-Cascaron de un login que usaremos en la sección 10 de mi curso de Angular de cero a experto.
-
-https://www.udemy.com/angular-2-fernando-herrera/?couponCode=ANGULAR-10
+Login básico que permite autenticar usuarios vía token y registrar nuevos usuarios con correo electronico en firebase.
 
 
 ![](https://github.com/Klerith/angular-login-demoapp/blob/master/src/assets/images/demo.png?raw=true)
