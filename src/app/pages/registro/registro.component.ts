@@ -17,7 +17,7 @@ export class RegistroComponent implements OnInit {
     this.user = new UserModel();
     this.user.email = 'rodrigogarciaavila26@gmail.com';
     this.user.name = 'Rodrigo';
-    this.user.password = 'garavirod14040';
+    this.user.password = '';
   }
 
   sendData(form: NgForm) {
