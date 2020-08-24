@@ -17,7 +17,12 @@ export class AuthService {
   }
   
   login(user: UserModel) {
+    const authData = {
+      ...user,
+      returnSecureToken: true
+    };
 
+    return this.http.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${this.apikey}`,authData);
   }
   signup(user: UserModel) {
     const authData = {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { UserModel } from '../../models/User.model';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,7 @@ import { UserModel } from '../../models/User.model';
 export class LoginComponent implements OnInit {
 
   user: UserModel;
-  constructor() { }
+  constructor(private auth: AuthService) { }
 
   ngOnInit() {
     this.user = new UserModel();
@@ -20,6 +21,13 @@ export class LoginComponent implements OnInit {
   login(form: NgForm) {
     if(!form.invalid) {
       console.log(form);
+      this.auth.login(this.user).subscribe(res =>{  
+        console.log("Successful");
+        
+      }, (err) =>{
+        console.log("Error in credential try again", err.error.error.message);
+        
+      })
     }
   }
 
