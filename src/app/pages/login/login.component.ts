@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { UserModel } from '../../models/User.model';
 import { AuthService } from 'src/app/services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -19,16 +20,34 @@ export class LoginComponent implements OnInit {
 
 
   login(form: NgForm) {
-    if(!form.invalid) {
+    if (!form.invalid) {
+      // Sweat allert
+      Swal.fire(
+        {
+          allowOutsideClick: false,
+          icon: 'info',
+          text: 'Wait a moment, please',
+        }
+      );
+      Swal.showLoading();
+
       console.log(form);
-      this.auth.login(this.user).subscribe(res =>{  
+      this.auth.login(this.user).subscribe(res => {
         console.log("Successful");
-        
-      }, (err) =>{
+        // Swal.close();
+
+      }, (err) => {
         console.log("Error in credential try again", err.error.error.message);
-        
-      })
+        // Swal.fire(
+        //   {
+        //     allowOutsideClick: false,
+        //     icon: 'info',
+        //     text: 'Wait a moment, please',
+        //   }
+        // );
+      });
     }
+
   }
 
 }
