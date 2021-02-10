@@ -12,12 +12,12 @@ import { AuthService } from '../../services/auth.service';
 })
 export class RegistroComponent implements OnInit {
 
-  user: UserModel;
+  user: UserModel = new UserModel();
+  rememberme = false;
   constructor(private auth: AuthService, 
               private router: Router) { }
 
-  ngOnInit() { 
-    this.user = new UserModel();
+  ngOnInit() {
     this.user.email = '';
     this.user.name = '';
     this.user.password = '';
@@ -30,7 +30,10 @@ export class RegistroComponent implements OnInit {
     this.auth.signup(this.user).subscribe(res => {
       alert("User was register succesfully");
       this.router.navigateByUrl('/home'); // redirect to
-      console.log(res);
+      // sasve on storge rememeberme
+      if(this.rememberme){
+        localStorage.setItem('emailLogin', this.user.email);
+      }
     }, (err)=>{
       alert(`User was not register ${err.error.error.message}`);
       console.log(err.error.error.message);

@@ -11,11 +11,16 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  user: UserModel;
+  user: UserModel = new UserModel();
+  rememberme = false;
   constructor(private auth: AuthService, private router : Router ) { }
 
   ngOnInit() {
-    this.user = new UserModel();
+    const recoveredemail: any = localStorage.getItem('emailLogin');
+    if(recoveredemail){
+      this.user.email = recoveredemail;
+      this.rememberme = true;
+    }
   }
 
 
@@ -27,7 +32,9 @@ export class LoginComponent implements OnInit {
       this.auth.login(this.user).subscribe(res => {
         alert(`User was authenticated`);
         this.router.navigateByUrl('/home'); // rediredct to
-        console.log("Successful");
+        if(this.rememberme){
+          localStorage.setItem('emailLogin', this.user.email);
+        }
       }, (err) => {
         console.log("Error in credential try again", err.error.error.message);
         alert(`Error on authentication ${err.error.error.message}`);
