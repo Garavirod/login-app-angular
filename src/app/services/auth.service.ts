@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 })
 export class AuthService {
   private apikey = 'AIzaSyAlRNeAvqiZqEjAeMf5dE_6h9-J0gKrhAM';
-  private userToken;
+  private userToken: string;
   // Create new users
   // https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[API_KEY]
   // Login
@@ -57,5 +57,9 @@ export class AuthService {
 
   private getToken() {
     this.userToken = (localStorage.getItem('token')) ? localStorage.getItem('token') : '';
+  }
+
+  isLoggedIn(): boolean{
+    return (this.userToken.length > 2) ? true: false;
   }
 }
