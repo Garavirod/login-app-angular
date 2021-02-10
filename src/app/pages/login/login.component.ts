@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { UserModel } from '../../models/User.model';
 import { AuthService } from 'src/app/services/auth.service';
-import Swal from 'sweetalert2';
-
+/* Local */
+import { UserModel } from '../../models/User.model';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 export class LoginComponent implements OnInit {
 
   user: UserModel;
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService, private router : Router ) { }
 
   ngOnInit() {
     this.user = new UserModel();
@@ -20,34 +20,18 @@ export class LoginComponent implements OnInit {
 
 
   login(form: NgForm) {
-    if (!form.invalid) {
-      // Sweat allert
-      Swal.fire(
-        {
-          allowOutsideClick: false,
-          icon: 'info',
-          text: 'Wait a moment, please',
-        }
-      );
-      Swal.showLoading();
-
+    //Valida if form is not valid
+    if (form.invalid) {return;}
       console.log(form);
+      // Valid credentials
       this.auth.login(this.user).subscribe(res => {
+        alert(`User was authenticated`);
+        this.router.navigateByUrl('/home'); // rediredct to
         console.log("Successful");
-        // Swal.close();
-
       }, (err) => {
         console.log("Error in credential try again", err.error.error.message);
-        // Swal.fire(
-        //   {
-        //     allowOutsideClick: false,
-        //     icon: 'info',
-        //     text: 'Wait a moment, please',
-        //   }
-        // );
+        alert(`Error on authentication ${err.error.error.message}`);
       });
-    }
-
   }
 
 }
