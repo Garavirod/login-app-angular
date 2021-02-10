@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserModel } from '../models/User.model';
 import { map } from 'rxjs/operators';
+import decode from 'jwt-decode';
 @Injectable({
   providedIn: 'root'
 })
@@ -54,13 +55,35 @@ export class AuthService {
   private saveToken(idToken: string) {
     this.userToken = idToken;
     localStorage.setItem('token', idToken);
+
+    let today = new Date();
+    today.setSeconds(3600);
   }
 
   private getToken() {
-    this.userToken = (localStorage.getItem('token')) ? localStorage.getItem('token') : '';
+    this.userToken = (localStorage.getItem('token')) ? localStorage.getItem('token') : null;
+  }
+
+
+  private getTokenExpirationDate(): any{
+    let token:any = decode(localStorage.getItem('token'));
+    console.log("EL TOKEN ", token.exp);
+    
+    if(!token){
+      return null;
+    }
+     let date = new Date(0);
+     date.setUTCSeconds(token.exp);
+     return date;
+  }
+
+  private isTokenExpired(){
+    let expDate = this.getTokenExpirationDate();
+    return expDate < new Date();
   }
 
   isLoggedIn(): boolean{
-    return (this.userToken.length > 2) ? true: false;
+    this.getToken();
+    return !!this.userToken && !this.isTokenExpired();
   }
 }
